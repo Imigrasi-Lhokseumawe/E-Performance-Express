@@ -8,6 +8,10 @@ const session = require("express-session");
 
 const UserRoute = require("./routes/UserRoute.js");
 const AuthRoute = require("./routes/AuthRoute.js");
+const Inteldakim = require("./routes/InteldakimRoute.js")
+const Lalintalkim = require("./routes/LalintalkimRoute.js")
+const Tikkim = require("./routes/TikkimRoute.js")
+const TataUsaha = require("./routes/TataUsahaRoute.js")
 
 dotenv.config();
 
@@ -34,5 +38,9 @@ app.use(express.json());
 
 app.use(UserRoute);
 app.use(AuthRoute);
+app.use(Inteldakim);
+app.use(Lalintalkim);
+app.use(Tikkim);
+app.use(TataUsaha);
 
 app.listen(5000, ()=> console.log("Server Sedang berjalan di http://localhost:5000"));

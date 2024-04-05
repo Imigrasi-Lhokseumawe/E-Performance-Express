@@ -1,19 +1,19 @@
-const Inteldakim = require("../models/InteldakimModel.js");
+const Tikkim = require("../models/TikkimModel.js");
 const Users = require("../models/UserModel.js")
 const { Op } = require("sequelize");
 
-const getInteldakim = async (req, res) => {
+const getTikkim = async (req, res) => {
     try {
         if (req.role === "admin") {
-            const inteldakim = await Inteldakim.findAll({
+            const tikkim = await Tikkim.findAll({
                 include: [{
                     model: Users,
                     attributes: ['username', 'email', 'role']
                 }],
             });
-            res.status(200).json(inteldakim);
+            res.status(200).json(tikkim);
         } else {
-            const inteldakim = await Inteldakim.findAll({
+            const tikkim = await Tikkim.findAll({
                 where: {
                     userId: req.userId,
                 },
@@ -22,7 +22,7 @@ const getInteldakim = async (req, res) => {
                     attributes: ['username', 'email', 'role']
                 }],
             });
-            res.status(200).json(inteldakim);
+            res.status(200).json(tikkim);
         }
         
     } catch (error) {
@@ -30,11 +30,11 @@ const getInteldakim = async (req, res) => {
     }
 }
 
-const getInteldakimById = async (req, res) => {
+const getTikkimById = async (req, res) => {
     try {
         let response;
         if (req.role === "admin") {
-            response = await Inteldakim.findOne({
+            response = await Tikkim.findOne({
                 attributes: ['uuid', 'id', 'kegiatan', 'jumlah', 'target', 'anggaran'],
                 where: {
                     uuid: req.params.id
@@ -45,7 +45,7 @@ const getInteldakimById = async (req, res) => {
                 }]
             })
         } else {
-            response = await Inteldakim.findOne({
+            response = await Tikkim.findOne({
                 attributes: ['uuid', 'id'],
                 where: {
                     [Op.and]: [{ uuid: req.params.id }, { userId: req.userId }]
@@ -62,7 +62,7 @@ const getInteldakimById = async (req, res) => {
     }
 };
 
-const createInteldakim = async (req, res) => {
+const createTikkim = async (req, res) => {
     const kegiatan = req.body.kegiatan;
     const jumlah = req.body.jumlah;
     const target = req.body.target;
@@ -74,7 +74,7 @@ const createInteldakim = async (req, res) => {
             return res.status(400).json({ error: "User ID not found in the request" });
         }
 
-        await Inteldakim.create({
+        await Tikkim.create({
             kegiatan: kegiatan,
             jumlah: jumlah,
             target: target,
@@ -82,42 +82,42 @@ const createInteldakim = async (req, res) => {
             userId: req.userId
         });
 
-        res.json({ msg: "Inteldakim Created" });
+        res.json({ msg: "Tikkim Created" });
     } catch (error) {
         console.log(error);
     }
 };
 
-const updateInteldakim = async (req, res) => {
+const updateTikkim = async (req, res) => {
     try {
-        await Inteldakim.update(req.body, {
+        await Tikkim.update(req.body, {
             where:{
                 uuid: req.params.id
             }
         })
-        res.status(200).json({msg: "Inteldakim Updated"})
+        res.status(200).json({msg: "Tikkim Updated"})
     } catch (error) {
         console.log(error.message);
     }
 };
 
-const deleteInteldakim = async (req, res) => {
+const deleteTikkim = async (req, res) => {
     try {
-        await Inteldakim.destroy({
+        await Tikkim.destroy({
             where: {
                 uuid: req.params.id,
             },
         });
-        res.status(200).json({ msg: "Inteldakim Deleted" });
+        res.status(200).json({ msg: "Tikkim Deleted" });
     } catch (error) {
         console.log(error.message);
     }
 };
 
 module.exports = {
-    getInteldakim,
-    getInteldakimById,
-    createInteldakim,
-    updateInteldakim,
-    deleteInteldakim
+    getTikkim,
+    getTikkimById,
+    createTikkim,
+    updateTikkim,
+    deleteTikkim
 };
