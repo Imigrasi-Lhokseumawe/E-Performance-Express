@@ -23,7 +23,11 @@ const store = new sessionStore({
     db: db
 })
 
-app.use(cors({ credentials: true, origin: '*' }));
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}));
+
 app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
@@ -43,4 +47,4 @@ app.use(Lalintalkim);
 app.use(Tikkim);
 app.use(TataUsaha);
 
-app.listen(5000, ()=> console.log("Server Sedang berjalan di http://localhost:5000"));
+app.listen(process.env.APP_PORT, ()=> console.log("Server Sedang berjalan di http://localhost:5000"));
