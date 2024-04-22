@@ -15,8 +15,10 @@ const Inteldakim = db.define('inteldakim', {
     },
     kegiatan: DataTypes.STRING,
     jumlah: DataTypes.STRING,
-    target: DataTypes.STRING,
+    output: DataTypes.STRING,
     anggaran: DataTypes.STRING,
+    sisaAnggaran: DataTypes.STRING,
+    periode: DataTypes.STRING,
     userId:{
         type: DataTypes.INTEGER,
         allowNull: false,
