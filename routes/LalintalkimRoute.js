@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+    getLalintalkimWithoutLogin,
     getLalintalkim,
     getLalintalkimById,
     createLalintalkim,
@@ -10,6 +11,7 @@ const { verifyUser } = require("../middleware/AuthUser.js")
 
 const router = express.Router()
 
+router.get('/lalintalkim-all', getLalintalkimWithoutLogin)
 router.get('/lalintalkim', verifyUser, getLalintalkim)
 router.get('/lalintalkim/:id', verifyUser, getLalintalkimById)
 router.post('/lalintalkim', verifyUser, createLalintalkim)

@@ -2,6 +2,15 @@ const Tikkim = require("../models/TikkimModel.js");
 const Users = require("../models/UserModel.js")
 const { Op } = require("sequelize");
 
+const getTikkimWithoutLogin = async (req, res) => {
+    try {
+        const tikkim = await Tikkim.findAll();
+        res.status(200).json(tikkim);
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+}
+
 const getTikkim = async (req, res) => {
     try {
         if (req.role === "admin") {
@@ -119,6 +128,7 @@ const deleteTikkim = async (req, res) => {
 };
 
 module.exports = {
+    getTikkimWithoutLogin,
     getTikkim,
     getTikkimById,
     createTikkim,

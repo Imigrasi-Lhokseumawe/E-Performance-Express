@@ -2,6 +2,15 @@ const Lalintalkim = require("../models/LalintalkimModel.js");
 const Users = require("../models/UserModel.js")
 const { Op } = require("sequelize");
 
+const getLalintalkimWithoutLogin = async (req, res) => {
+    try {
+        const lalintalkim = await Lalintalkim.findAll();
+        res.status(200).json(lalintalkim);
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+}
+
 const getLalintalkim = async (req, res) => {
     try {
         if (req.role === "admin") {
@@ -119,6 +128,7 @@ const deleteLalintalkim = async (req, res) => {
 };
 
 module.exports = {
+    getLalintalkimWithoutLogin,
     getLalintalkim,
     getLalintalkimById,
     createLalintalkim,

@@ -2,6 +2,15 @@ const TataUsaha = require("../models/TataUsahaModel.js");
 const Users = require("../models/UserModel.js")
 const { Op } = require("sequelize");
 
+const getTataUsahaWithoutLogin = async (req, res) => {
+    try {
+        const tataUsaha = await TataUsaha.findAll();
+        res.status(200).json(tataUsaha);
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+}
+
 const getTataUsaha = async (req, res) => {
     try {
         if (req.role === "admin") {
@@ -119,6 +128,7 @@ const deleteTataUsaha = async (req, res) => {
 };
 
 module.exports = {
+    getTataUsahaWithoutLogin,
     getTataUsaha,
     getTataUsahaById,
     createTataUsaha,

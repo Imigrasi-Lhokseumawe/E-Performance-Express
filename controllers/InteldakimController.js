@@ -2,6 +2,15 @@ const Inteldakim = require("../models/InteldakimModel.js");
 const Users = require("../models/UserModel.js")
 const { Op } = require("sequelize");
 
+const getInteldakimWithoutLogin = async (req, res) => {
+    try {
+        const inteldakim = await Inteldakim.findAll();
+        res.status(200).json(inteldakim);
+    } catch (error) {
+        res.status(500).json({ msg: error.message })
+    }
+}
+
 const getInteldakim = async (req, res) => {
     try {
         if (req.role === "admin") {
@@ -24,7 +33,7 @@ const getInteldakim = async (req, res) => {
             });
             res.status(200).json(inteldakim);
         }
-        
+
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }
@@ -95,11 +104,11 @@ const createInteldakim = async (req, res) => {
 const updateInteldakim = async (req, res) => {
     try {
         await Inteldakim.update(req.body, {
-            where:{
+            where: {
                 uuid: req.params.id
             }
         })
-        res.status(200).json({msg: "Inteldakim Updated"})
+        res.status(200).json({ msg: "Inteldakim Updated" })
     } catch (error) {
         console.log(error.message);
     }
@@ -119,6 +128,7 @@ const deleteInteldakim = async (req, res) => {
 };
 
 module.exports = {
+    getInteldakimWithoutLogin,
     getInteldakim,
     getInteldakimById,
     createInteldakim,

@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+    getTikkimWithoutLogin,
     getTikkim,
     getTikkimById,
     createTikkim,
@@ -10,6 +11,7 @@ const { verifyUser } = require("../middleware/AuthUser.js")
 
 const router = express.Router()
 
+router.get('/tikkim-all', getTikkimWithoutLogin)
 router.get('/tikkim', verifyUser, getTikkim)
 router.get('/tikkim/:id', verifyUser, getTikkimById)
 router.post('/tikkim', verifyUser, createTikkim)

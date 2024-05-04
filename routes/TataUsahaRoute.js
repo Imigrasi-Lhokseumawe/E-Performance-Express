@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+    getTataUsahaWithoutLogin,
     getTataUsaha,
     getTataUsahaById,
     createTataUsaha,
@@ -10,6 +11,7 @@ const { verifyUser } = require("../middleware/AuthUser.js")
 
 const router = express.Router()
 
+router.get('/tata-usaha-all', getTataUsahaWithoutLogin)
 router.get('/tata-usaha', verifyUser, getTataUsaha)
 router.get('/tata-usaha/:id', verifyUser, getTataUsahaById)
 router.post('/tata-usaha', verifyUser, createTataUsaha)

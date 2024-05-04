@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+    getInteldakimWithoutLogin,
     getInteldakim,
     getInteldakimById,
     createInteldakim,
@@ -10,6 +11,7 @@ const { verifyUser } = require("../middleware/AuthUser.js")
 
 const router = express.Router()
 
+router.get('/inteldakim-all', getInteldakimWithoutLogin)
 router.get('/inteldakim', verifyUser, getInteldakim)
 router.get('/inteldakim/:id', verifyUser, getInteldakimById)
 router.post('/inteldakim', verifyUser, createInteldakim)
