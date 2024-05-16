@@ -26,7 +26,52 @@ const adminOnly = async (req, res, next) => {
     next()
 }
 
+const inteldakimOnly = async (req, res, next) => {
+    const user = await Users.findOne({
+        where: {
+            uuid: req.session.userId
+        }
+    })
+    if (!user) return res.status(404).json({msg: "User tidak ditemukan"})
+    if (user.role !== "inteldakim") return res.status(403).json({msg: "Khusus Inteldakim"})
+    next()
+}
+
+const lalintalkimOnly = async (req, res, next) => {
+    const user = await Users.findOne({
+        where: {
+            uuid: req.session.userId
+        }
+    })
+    if (!user) return res.status(404).json({msg: "User tidak ditemukan"})
+    if (user.role !== "lalintalkim") return res.status(403).json({msg: "Khusus Lalintalkim"})
+    next()
+}
+
+const tataUsahaOnly = async (req, res, next) => {
+    const user = await Users.findOne({
+        where: {
+            uuid: req.session.userId
+        }
+    })
+    if (!user) return res.status(404).json({msg: "User tidak ditemukan"})
+    if (user.role !== "tataUsaha") return res.status(403).json({msg: "Khusus tataUsaha"})
+    next()
+}
+
+const tikkimOnly = async (req, res, next) => {
+    const user = await Users.findOne({
+        where: {
+            uuid: req.session.userId
+        }
+    })
+    if (!user) return res.status(404).json({msg: "User tidak ditemukan"})
+    if (user.role !== "tikkim") return res.status(403).json({msg: "Khusus Tikkim"})
+    next()
+}
+
 module.exports = {
     verifyUser,
-    adminOnly
+    adminOnly,
+    inteldakimOnly
 };
