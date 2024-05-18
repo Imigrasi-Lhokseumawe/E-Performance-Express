@@ -19,6 +19,7 @@ const Lalintalkim = db.define('lalintalkim', {
     anggaran: DataTypes.STRING,
     sisaAnggaran: DataTypes.STRING,
     periode: DataTypes.STRING,
+    isAccept: DataTypes.BOOLEAN,
     userId:{
         type: DataTypes.INTEGER,
         allowNull: false,

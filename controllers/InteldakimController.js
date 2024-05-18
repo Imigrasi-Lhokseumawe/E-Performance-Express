@@ -44,7 +44,7 @@ const getInteldakimById = async (req, res) => {
         let response;
         if (req.role === "admin") {
             response = await Inteldakim.findOne({
-                attributes: ['uuid', 'id', 'kegiatan', 'jumlah', 'output', 'anggaran', 'sisaAnggaran', 'periode'],
+                attributes: ['uuid', 'id', 'kegiatan', 'jumlah', 'output', 'anggaran', 'sisaAnggaran', 'periode', 'isAccept'],
                 where: {
                     uuid: req.params.id
                 },
@@ -78,6 +78,7 @@ const createInteldakim = async (req, res) => {
     const anggaran = req.body.anggaran;
     const sisaAnggaran = req.body.sisaAnggaran;
     const periode = req.body.periode;
+    const isAccept = false
     try {
         const userId = req.userId;
 
@@ -92,6 +93,7 @@ const createInteldakim = async (req, res) => {
             anggaran: anggaran,
             sisaAnggaran: sisaAnggaran,
             periode: periode,
+            isAccept: isAccept,
             userId: req.userId
         });
 

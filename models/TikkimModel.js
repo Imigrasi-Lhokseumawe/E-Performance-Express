@@ -19,6 +19,7 @@ const Tikkim = db.define('tikkim', {
     anggaran: DataTypes.STRING,
     sisaAnggaran: DataTypes.STRING,
     periode: DataTypes.STRING,
+    isAccept: DataTypes.BOOLEAN,
     userId:{
         type: DataTypes.INTEGER,
         allowNull: false,

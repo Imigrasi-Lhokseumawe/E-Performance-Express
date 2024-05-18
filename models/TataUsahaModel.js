@@ -19,6 +19,7 @@ const TataUsaha = db.define('tata_usaha', {
     anggaran: DataTypes.STRING,
     sisaAnggaran: DataTypes.STRING,
     periode: DataTypes.STRING,
+    isAccept: DataTypes.BOOLEAN,
     userId:{
         type: DataTypes.INTEGER,
         allowNull: false,
