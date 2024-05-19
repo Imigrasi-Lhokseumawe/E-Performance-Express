@@ -79,6 +79,7 @@ const createLalintalkim = async (req, res) => {
     const sisaAnggaran = req.body.sisaAnggaran;
     const periode = req.body.periode;
     const isAccept = false
+    const tanggal = req.body.tanggal;
     try {
         const userId = req.userId;
 
@@ -94,6 +95,7 @@ const createLalintalkim = async (req, res) => {
             sisaAnggaran: sisaAnggaran,
             periode: periode,
             isAccept: isAccept,
+            tanggal: tanggal,
             userId: req.userId
         });
 

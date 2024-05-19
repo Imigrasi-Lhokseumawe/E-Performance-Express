@@ -20,6 +20,7 @@ const Inteldakim = db.define('inteldakim', {
     sisaAnggaran: DataTypes.STRING,
     periode: DataTypes.STRING,
     isAccept: DataTypes.BOOLEAN,
+    tanggal: DataTypes.DATE,
     userId:{
         type: DataTypes.INTEGER,
         allowNull: false,
