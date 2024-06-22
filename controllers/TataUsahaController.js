@@ -1,6 +1,7 @@
 const TataUsaha = require("../models/TataUsahaModel.js");
 const Users = require("../models/UserModel.js")
 const { Op } = require("sequelize");
+const moment = require('moment');
 
 const getTataUsahaWithoutLogin = async (req, res) => {
     try {
@@ -12,27 +13,32 @@ const getTataUsahaWithoutLogin = async (req, res) => {
 }
 
 const getTataUsaha = async (req, res) => {
+    const { startDate, endDate } = req.query;
     try {
-        if (req.role === "admin") {
-            const tataUsaha = await TataUsaha.findAll({
-                include: [{
-                    model: Users,
-                    attributes: ['username', 'email', 'role']
-                }],
-            });
-            res.status(200).json(tataUsaha);
-        } else {
-            const tataUsaha = await TataUsaha.findAll({
-                where: {
-                    userId: req.userId,
-                },
-                include: [{
-                    model: Users,
-                    attributes: ['username', 'email', 'role']
-                }],
-            });
-            res.status(200).json(tataUsaha);
+        const parsedStartDate = startDate ? moment(startDate).startOf('day').toDate() : null;
+        const parsedEndDate = endDate ? moment(endDate).endOf('day').toDate() : null;
+
+        let whereClause = {};
+
+        if (parsedStartDate && parsedEndDate) {
+            whereClause.createdAt = {
+                [Op.between]: [parsedStartDate, parsedEndDate]
+            };
         }
+        
+        if (req.role !== "admin") {
+            whereClause.userId = req.userId;
+        }
+
+        const tataUsaha = await TataUsaha.findAll({
+            where: whereClause,
+            include: [{
+                model: Users,
+                attributes: ['username', 'email', 'role']
+            }],
+        });
+
+        res.status(200).json(tataUsaha);
         
     } catch (error) {
         res.status(500).json({ msg: error.message })

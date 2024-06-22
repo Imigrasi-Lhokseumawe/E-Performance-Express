@@ -1,6 +1,7 @@
 const Inteldakim = require("../models/InteldakimModel.js");
 const Users = require("../models/UserModel.js")
 const { Op } = require("sequelize");
+const moment = require('moment');
 
 const getInteldakimWithoutLogin = async (req, res) => {
     try {
@@ -12,9 +13,18 @@ const getInteldakimWithoutLogin = async (req, res) => {
 }
 
 const getInteldakim = async (req, res) => {
+    const { startDate, endDate } = req.query;
     try {
+        const parsedStartDate = moment(startDate).startOf('day').toDate();
+        const parsedEndDate = moment(endDate).endOf('day').toDate();
+
         if (req.role === "admin") {
             const inteldakim = await Inteldakim.findAll({
+                where: {
+                    createdAt: {
+                        [Op.between]: [parsedStartDate, parsedEndDate]
+                    }
+                },
                 include: [{
                     model: Users,
                     attributes: ['username', 'email', 'role']
@@ -25,6 +35,9 @@ const getInteldakim = async (req, res) => {
             const inteldakim = await Inteldakim.findAll({
                 where: {
                     userId: req.userId,
+                    createdAt: {
+                        [Op.between]: [parsedStartDate, parsedEndDate]
+                    }
                 },
                 include: [{
                     model: Users,

@@ -1,6 +1,7 @@
 const Lalintalkim = require("../models/LalintalkimModel.js");
 const Users = require("../models/UserModel.js")
 const { Op } = require("sequelize");
+const moment = require('moment');
 
 const getLalintalkimWithoutLogin = async (req, res) => {
     try {
@@ -12,30 +13,35 @@ const getLalintalkimWithoutLogin = async (req, res) => {
 }
 
 const getLalintalkim = async (req, res) => {
+    const { startDate, endDate } = req.query;
     try {
-        if (req.role === "admin") {
-            const lalintalkim = await Lalintalkim.findAll({
-                include: [{
-                    model: Users,
-                    attributes: ['username', 'email', 'role']
-                }],
-            });
-            res.status(200).json(lalintalkim);
-        } else {
-            const lalintalkim = await Lalintalkim.findAll({
-                where: {
-                    userId: req.userId,
-                },
-                include: [{
-                    model: Users,
-                    attributes: ['username', 'email', 'role']
-                }],
-            });
-            res.status(200).json(lalintalkim);
+        const parsedStartDate = startDate ? moment(startDate).startOf('day').toDate() : null;
+        const parsedEndDate = endDate ? moment(endDate).endOf('day').toDate() : null;
+
+        let whereClause = {};
+
+        if (parsedStartDate && parsedEndDate) {
+            whereClause.createdAt = {
+                [Op.between]: [parsedStartDate, parsedEndDate]
+            };
         }
+
+        if (req.role !== "admin") {
+            whereClause.userId = req.userId;
+        }
+
+        const lalintalkim = await Lalintalkim.findAll({
+            where: whereClause,
+            include: [{
+                model: Users,
+                attributes: ['username', 'email', 'role']
+            }],
+        });
+
+        res.status(200).json(lalintalkim);
         
     } catch (error) {
-        res.status(500).json({ msg: error.message })
+        res.status(500).json({ msg: error.message });
     }
 }
 
